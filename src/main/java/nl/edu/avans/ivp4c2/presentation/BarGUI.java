@@ -24,18 +24,8 @@ public class BarGUI extends JPanel {
 	
 
 	private JButton signupButton;
-	private JButton[] tablebuttons;
-	private JButton buttonTable1;
-	private JButton tableButton1;
-	private JButton tableButton2;
-	private JButton tableButton3;
-	private JButton tableButton4;
-	private JButton tableButton5;
-	private JButton tableButton6;
-	private JButton tableButton7;
-	private JButton tableButton8;
-	private JButton tableButton9;
-	private JButton tableButton10;
+	private final int AMOUNT_OF_TABLEBUTTONS = 10;
+	private JButton[] tableButton;
 	
 	// Panels
 	private JPanel panelNorth;
@@ -72,40 +62,34 @@ public class BarGUI extends JPanel {
 		logo.setMaximumSize(new Dimension(250, 250));
 		
 		signupButton = new JButton("Inschrijven");
+		signupButton.setFont(font);
 		panelNorthLeft.add(signupButton);
 		
-		tableButton1 = new JButton("Tafel 1");
-		tableButton1.setFont(font);
-		tableButton2 = new JButton("Tafel 2");
-		tableButton3 = new JButton("Tafel 3");
-		tableButton4 = new JButton("Tafel 4");
-		tableButton5 = new JButton("Tafel 5");
-		tableButton6 = new JButton("Tafel 6");
-		tableButton7 = new JButton("Tafel 7");
-		tableButton8 = new JButton("Tafel 8");
-		tableButton9 = new JButton("Tafel 9");
-		tableButton10 = new JButton("Tafel 10");
+		// Array with the ten table buttons 
+		tableButton = new JButton[AMOUNT_OF_TABLEBUTTONS];
+		for(int tb = 0; tb <= 9; tb++) {
+			tableButton[tb] = new JButton("Tafel " + tb);
+			tableButton[tb].setFont(font);
+		}
 		
-		panelNorthRight.add(tableButton1);
-		panelNorthRight.add(tableButton2);
-		panelNorthRight.add(tableButton3);
-		panelNorthRight.add(tableButton4);
-		panelNorthRight.add(tableButton5);
-		panelNorthRight.add(tableButton6);
-		panelNorthRight.add(tableButton7);
-		panelNorthRight.add(tableButton8);
-		panelNorthRight.add(tableButton9);
-		panelNorthRight.add(tableButton10);
+		for(int tb = 0; tb <= 9; tb++) {
+			panelNorthRight.add(tableButton[tb]);
+		}
 		
 		// Setup west navigation
 		
 		barOrderButton = new JButton("Barbestellingen");
 		barOrderButton.setBackground(Color.DARK_GRAY);
 		barOrderButton.setForeground(Color.WHITE);
+		barOrderButton.setFont(font);
 		kitchenOrderButton = new JButton("Keukenbestellingen");
+		kitchenOrderButton.setFont(font);
 		employeesButton = new JButton("Employees");
+		employeesButton.setFont(font);
 		loginButton = new JButton("Inloggen");
+		loginButton.setFont(font);
 		logoutButton = new JButton("Uitloggen");
+		logoutButton.setFont(font);
 		
 		panelWest.add(barOrderButton);
 		panelWest.add(kitchenOrderButton);
@@ -117,6 +101,7 @@ public class BarGUI extends JPanel {
 		completeOrderButton = new JButton("Afronden");
 		completeOrderButton.setMinimumSize(new Dimension(100,100));
 		completeOrderButton.setPreferredSize(new Dimension(100,100) );
+		completeOrderButton.setFont(font);
 		panelEast.add(completeOrderButton);
 		
 		add(panelNorth, BorderLayout.NORTH);
