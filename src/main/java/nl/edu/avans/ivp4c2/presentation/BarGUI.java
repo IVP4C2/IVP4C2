@@ -69,8 +69,8 @@ public class BarGUI extends JPanel {
 
 		// Setup North navigation
 		JLabel logo = new JLabel();
-		logo.setIcon(new ImageIcon(
-				"C:\\Users\\Bram\\Documents\\EclipsProjects\\ivp4c2\\src\\main\\resources\\logo.jpg"));
+		
+		logo.setIcon(new ImageIcon("/Bedienen/src/main/resources/logo.jpg"));
 		panelNorthLeft.add(logo);
 
 		signupButton = new JButton("Inschrijven");
@@ -180,15 +180,20 @@ public class BarGUI extends JPanel {
 	// Inner classes
 	class bHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			
 			for (int tb = 1; tb <= 10; tb++) {
 				if (e.getSource() == tableButton[tb]) {
+					BarGUI.this.remove(panelCenter);
 					System.out.println("Bestelling is geprint!");
-					
+
 					// Setup center - left
 					JTable tableLeft = null;
 					try {
-						tableLeft = new JTable(buildTableModel(barmanager.getOrders(tb)));
+						tableLeft = new JTable(
+								buildTableModel(barmanager.getOrders(tb)));
 						tableLeft.setBorder(BorderFactory.createEtchedBorder());
+						panelCenter.add(tableLeft);
+						
 					} catch (SQLException f) {
 						// TODO Auto-generated catch block
 						f.printStackTrace();
@@ -197,19 +202,22 @@ public class BarGUI extends JPanel {
 					// Panel center - right
 					JTable tableRight = null;
 					try {
-						tableRight = new JTable(buildTableModel(barmanager.getOrders(tb)));
-						tableRight.setBorder(BorderFactory.createEtchedBorder());
+						tableRight = new JTable(
+								buildTableModel(barmanager.getOrders(tb)));
+						tableRight
+								.setBorder(BorderFactory.createEtchedBorder());
+						panelCenter.add(tableRight);
+						
 					} catch (SQLException f) {
 						// TODO Auto-generated catch block
 						f.printStackTrace();
 					}
+					BarGUI.this.add(panelCenter);
 					
-					panelCenter.add(tableLeft);
-					panelCenter.add(tableRight);
-					panelCenter.repaint();
-					
+
 				}
 			}
+			
 		}
 	}
 }
