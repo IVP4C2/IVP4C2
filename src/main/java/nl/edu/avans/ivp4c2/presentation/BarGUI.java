@@ -40,6 +40,7 @@ public class BarGUI extends JPanel {
 	private JPanel panelEast;
 	private JPanel panelCenter;
 
+	static Vector<String> columnNames;
 	private BarManager barmanager;
 
 	public BarGUI(BarManager barmanager) {
@@ -112,19 +113,29 @@ public class BarGUI extends JPanel {
 		completeOrderButton.setFont(font);
 		panelEast.add(completeOrderButton);
 
-		// Setup center panel
+		// Setup center - left
 		JTable tableLeft = null;
 		try {
 			tableLeft = new JTable(buildTableModel(barmanager.getOrders()));
+			tableLeft.setBorder(BorderFactory.createEtchedBorder());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		panelCenter.add(tableRight);
+		// Panel center - right
+		JTable tableRight = null;
+		try {
+			tableRight = new JTable(buildTableModel(barmanager.getOrders()));
+			tableRight.setBorder(BorderFactory.createEtchedBorder());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		panelCenter.add(tableLeft);
 		panelCenter.add(tableRight);
 		panelCenter.setBackground(Color.YELLOW);
-		// panelCenter.add(overviewCurrentTableOrder);
 
 		// Add all panels
 		add(panelNorth, BorderLayout.NORTH);
@@ -162,18 +173,20 @@ public class BarGUI extends JPanel {
 
 		ResultSetMetaData metaData = (ResultSetMetaData) rs.getMetaData();
 
-		// names of columns
-		Vector<String> columnNames = new Vector<String>();
-		int columnCount = metaData.getColumnCount();
-		for (int column = 1; column <= columnCount; column++) {
-			columnNames.add(metaData.getColumnName(column));
-		}
-
+//		 names of columns
+		columnNames = new Vector<String>();
+		columnNames.add("ProductNummer");
+		columnNames.add("ProductNaam");
+		columnNames.add("Merk");
+		columnNames.add("BestellingNummer");
+		columnNames.add("TafelNummer");
+		
 		// data of the table
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+		
 		while (rs.next()) {
 			Vector<Object> vector = new Vector<Object>();
-			for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+			for (int columnIndex = 1; columnIndex <= 5; columnIndex++) {
 				vector.add(rs.getObject(columnIndex));
 			}
 			data.add(vector);
