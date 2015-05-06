@@ -1,6 +1,8 @@
 package nl.edu.avans.ivp4c2.presentation;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -79,6 +81,7 @@ public class BarGUI extends JPanel {
 		tableButton = new JButton[AMOUNT_OF_TABLEBUTTONS];
 		for (int tb = 1; tb <= 10; tb++) {
 			tableButton[tb] = new JButton("Tafel " + tb);
+			tableButton[tb].addActionListener(new bHandler());
 			tableButton[tb].setFont(font);
 		}
 
@@ -113,28 +116,6 @@ public class BarGUI extends JPanel {
 		completeOrderButton.setFont(font);
 		panelEast.add(completeOrderButton);
 
-		// Setup center - left
-		JTable tableLeft = null;
-		try {
-			tableLeft = new JTable(buildTableModel(barmanager.getOrders()));
-			tableLeft.setBorder(BorderFactory.createEtchedBorder());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// Panel center - right
-		JTable tableRight = null;
-		try {
-			tableRight = new JTable(buildTableModel(barmanager.getOrders()));
-			tableRight.setBorder(BorderFactory.createEtchedBorder());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		panelCenter.add(tableLeft);
-		panelCenter.add(tableRight);
 		panelCenter.setBackground(Color.YELLOW);
 
 		// Add all panels
@@ -173,17 +154,17 @@ public class BarGUI extends JPanel {
 
 		ResultSetMetaData metaData = (ResultSetMetaData) rs.getMetaData();
 
-//		 names of columns
+		// names of columns
 		columnNames = new Vector<String>();
 		columnNames.add("ProductNummer");
 		columnNames.add("ProductNaam");
 		columnNames.add("Merk");
 		columnNames.add("BestellingNummer");
 		columnNames.add("TafelNummer");
-		
+
 		// data of the table
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-		
+
 		while (rs.next()) {
 			Vector<Object> vector = new Vector<Object>();
 			for (int columnIndex = 1; columnIndex <= 5; columnIndex++) {
@@ -194,5 +175,41 @@ public class BarGUI extends JPanel {
 
 		return new DefaultTableModel(data, columnNames);
 
+	}
+
+	// Inner classes
+	class bHandler implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			for (int tb = 1; tb <= 10; tb++) {
+				if (e.getSource() == tableButton[tb]) {
+					System.out.println("Bestelling is geprint!");
+					
+					// Setup center - left
+					JTable tableLeft = null;
+					try {
+						tableLeft = new JTable(buildTableModel(barmanager.getOrders(tb)));
+						tableLeft.setBorder(BorderFactory.createEtchedBorder());
+					} catch (SQLException f) {
+						// TODO Auto-generated catch block
+						f.printStackTrace();
+					}
+
+					// Panel center - right
+					JTable tableRight = null;
+					try {
+						tableRight = new JTable(buildTableModel(barmanager.getOrders(tb)));
+						tableRight.setBorder(BorderFactory.createEtchedBorder());
+					} catch (SQLException f) {
+						// TODO Auto-generated catch block
+						f.printStackTrace();
+					}
+					
+					panelCenter.add(tableLeft);
+					panelCenter.add(tableRight);
+					panelCenter.repaint();
+					
+				}
+			}
+		}
 	}
 }

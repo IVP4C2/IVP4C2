@@ -21,7 +21,7 @@ public class OrderDAO {
 		// has been added to explicitely make this clear.
 	}
 
-	public ResultSet getOrder() {
+	public ResultSet getOrder(int tableNumber) {
 
 		ResultSet resultset = null;
 
@@ -33,7 +33,8 @@ public class OrderDAO {
 			resultset = connection
 					.executeSQLSelectStatement("SELECT p.productNummer, p.productNaam, p.Merk, b.bestellingNummer, b.tafelNummer "
 							+ "FROM bestelling b INNER JOIN bestelling_product bp ON b.bestellingNummer = bp.bestellingNummer "
-							+ "INNER JOIN product p ON bp.productNummer = p.productNummer;");
+							+ "INNER JOIN product p ON bp.productNummer = p.productNummer "
+							+ "WHERE b.tafelNummer = '"+tableNumber+"';");
 			
 			// close resultset nog maken!!!!@@@@!!!$%&!@#%@!*~@*
 

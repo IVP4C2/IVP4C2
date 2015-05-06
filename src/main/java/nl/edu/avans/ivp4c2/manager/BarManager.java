@@ -45,10 +45,10 @@ public class BarManager {
 	}
 	
 	// Get out the dao the resultset
-	public ResultSet getOrders() { 
+	public ResultSet getOrders(int tableNumber) { 
 		ResultSet resultset = null;
 		OrderDAO orderdao = new OrderDAO();
-		resultset = orderdao.getOrder();
+		resultset = orderdao.getOrder(tableNumber);
 		return resultset;
 	}
 	
