@@ -194,7 +194,7 @@ public class BarGUI extends JPanel {
 			for (int tb = 1; tb <= 10; tb++) {
 				if (e.getSource() == tableButton[tb]) {
 					panelCenter.removeAll();
-					System.out.println("Bestelling is geprint!");
+					//System.out.println("Bestelling is geprint!");
 
 					// Setup center - left
 					JTable tableLeft = null;
@@ -226,6 +226,7 @@ public class BarGUI extends JPanel {
 					
 
 				}
+				revalidate();
 			}
 			
 		}
