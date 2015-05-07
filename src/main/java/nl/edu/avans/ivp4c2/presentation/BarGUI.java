@@ -3,10 +3,16 @@ package nl.edu.avans.ivp4c2.presentation;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -68,10 +74,14 @@ public class BarGUI extends JPanel {
 		panelCenter.setLayout(new GridLayout(1, 2));
 
 		// Setup North navigation
-		JLabel logo = new JLabel();
-		
-		logo.setIcon(new ImageIcon("/Bedienen/src/main/resources/logo.jpg"));
-		panelNorthLeft.add(logo);
+		BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File("src/main/resources/logo.jpg")); 
+        } catch (IOException ex) {
+            Logger.getLogger(BarGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        JLabel logo = new JLabel(new ImageIcon(image));
+        panelNorthLeft.add(logo);
 
 		signupButton = new JButton("Inschrijven");
 		signupButton.setFont(font);
@@ -183,7 +193,7 @@ public class BarGUI extends JPanel {
 			
 			for (int tb = 1; tb <= 10; tb++) {
 				if (e.getSource() == tableButton[tb]) {
-					BarGUI.this.remove(panelCenter);
+					panelCenter.removeAll();
 					System.out.println("Bestelling is geprint!");
 
 					// Setup center - left
