@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import com.mysql.jdbc.ResultSetMetaData;
@@ -48,7 +49,7 @@ public class BarGUI extends JPanel {
 	private JPanel panelEast;
 	private JPanel panelCenter;
 
-	static Vector<String> columnNames;
+//	static Vector<String> columnNames;
 	private BarManager barmanager;
 
 	public BarGUI(BarManager barmanager) {
@@ -91,7 +92,7 @@ public class BarGUI extends JPanel {
 		tableButton = new JButton[AMOUNT_OF_TABLEBUTTONS];
 		for (int tb = 1; tb <= 10; tb++) {
 			tableButton[tb] = new JButton("Tafel " + tb);
-			tableButton[tb].addActionListener(new bHandler());
+			tableButton[tb].addActionListener(new BHandler());
 			tableButton[tb].setFont(font);
 		}
 
@@ -125,8 +126,6 @@ public class BarGUI extends JPanel {
 		completeOrderButton.setPreferredSize(new Dimension(100, 100));
 		completeOrderButton.setFont(font);
 		panelEast.add(completeOrderButton);
-
-		panelCenter.setBackground(Color.YELLOW);
 
 		// Add all panels
 		add(panelNorth, BorderLayout.NORTH);
@@ -165,19 +164,25 @@ public class BarGUI extends JPanel {
 		ResultSetMetaData metaData = (ResultSetMetaData) rs.getMetaData();
 
 		// names of columns
-		columnNames = new Vector<String>();
-		columnNames.add("ProductNummer");
-		columnNames.add("ProductNaam");
-		columnNames.add("Merk");
-		columnNames.add("BestellingNummer");
-		columnNames.add("TafelNummer");
+//		columnNames = new Vector<String>();
+//		columnNames.add("ProductNummer");
+//		columnNames.add("ProductNaam");
+//		columnNames.add("Merk");
+//		columnNames.add("BestellingNummer");
+//		columnNames.add("TafelNummer");
 
+		  Vector<String> columnNames = new Vector<String>();
+		    int columnCount = metaData.getColumnCount();
+		    for (int column = 1; column <= columnCount; column++) {
+		        columnNames.add(metaData.getColumnName(column));
+		    }
+		    
 		// data of the table
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
 
 		while (rs.next()) {
 			Vector<Object> vector = new Vector<Object>();
-			for (int columnIndex = 1; columnIndex <= 5; columnIndex++) {
+			for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
 				vector.add(rs.getObject(columnIndex));
 			}
 			data.add(vector);
@@ -188,11 +193,19 @@ public class BarGUI extends JPanel {
 	}
 
 	// Inner classes
-	class bHandler implements ActionListener {
+	class BHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			
 			for (int tb = 1; tb <= 10; tb++) {
+	
 				if (e.getSource() == tableButton[tb]) {
+					
+					// give the active button a border				
+					TitledBorder topBorder = BorderFactory.createTitledBorder("Actief");
+					topBorder.setBorder(BorderFactory.createLineBorder(Color.black));
+				    topBorder.setTitlePosition(TitledBorder.TOP);
+				    tableButton[tb].setBorder(topBorder);
+
 					panelCenter.removeAll();
 					//System.out.println("Bestelling is geprint!");
 
@@ -200,9 +213,9 @@ public class BarGUI extends JPanel {
 					JTable tableLeft = null;
 					try {
 						tableLeft = new JTable(
-								buildTableModel(barmanager.getOrders(tb)));
+								buildTableModel(barmanager.getTableOrders(tb)));
 						tableLeft.setBorder(BorderFactory.createEtchedBorder());
-						panelCenter.add(tableLeft);
+						panelCenter.add(new JScrollPane(tableLeft));
 						
 					} catch (SQLException f) {
 						// TODO Auto-generated catch block
@@ -212,11 +225,14 @@ public class BarGUI extends JPanel {
 					// Panel center - right
 					JTable tableRight = null;
 					try {
+						int selectedRowIndex = tableLeft.getSelectedRow();
+						Object selectedObject = (Object) tableLeft.getModel().getValueAt(selectedRowIndex, 1);
+						
 						tableRight = new JTable(
-								buildTableModel(barmanager.getOrders(tb)));
+								buildTableModel(barmanager.getOrders(tb, Integer.parseInt(selectedObject.toString()))));
 						tableRight
 								.setBorder(BorderFactory.createEtchedBorder());
-						panelCenter.add(tableRight);
+						panelCenter.add(new JScrollPane(tableRight));
 						
 					} catch (SQLException f) {
 						// TODO Auto-generated catch block
@@ -225,7 +241,10 @@ public class BarGUI extends JPanel {
 					BarGUI.this.add(panelCenter);
 					
 
+				} else {
+					tableButton[tb].revalidate();
 				}
+					
 				revalidate();
 			}
 			
