@@ -13,20 +13,20 @@ public class BarManager {
 //	private ArrayList<Order> orders;
 	private ArrayList<Table> tables;
 	private ArrayList<Table> paymentTables;
-	
+	private TableDAO tabledao;
 	public BarManager()
 	{
 //		orders = new ArrayList<Order>();
 		tables = new ArrayList<Table>();
 		paymentTables = new ArrayList<Table>();
-		
+		tabledao = new TableDAO();
 		getActiveTables();
 		getPaymentTables();
 	}
 	
 	public ArrayList<Table> getActiveTables()
 	{
-		TableDAO tabledao = new TableDAO();
+
 		for(Table t : tabledao.getTable())
 		{
 			tables.add(t);
@@ -36,7 +36,7 @@ public class BarManager {
 	
 	public ArrayList<Table> getPaymentTables()
 	{
-		TableDAO tabledao = new TableDAO();
+
 		for(Table t : tabledao.getPaymentTable())
 		{
 			paymentTables.add(t);

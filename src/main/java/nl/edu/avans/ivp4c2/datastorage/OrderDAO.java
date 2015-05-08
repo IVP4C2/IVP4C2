@@ -53,8 +53,8 @@ public class OrderDAO {
 			// statement.
 			resultset = connection
 					.executeSQLSelectStatement("SELECT b.bestellingNummer, b.tafelNummer, b.bestellingTijd, b.bestellingStatus "
-							+ "FROM bestelling b INNER JOIN bestelling_product bp ON b.bestellingNummer = bp.bestellingNummer INNER JOIN product p ON bp.productNummer = p.productNummer "
-							+ "WHERE b.tafelNummer = "+tableNumber+";");
+							+ "FROM bestelling b INNER JOIN bestelling_product bp ON b.bestellingNummer = bp.bestellingNummer "
+							+ "INNER JOIN product p ON bp.productNummer = p.productNummer WHERE b.tafelNummer = '"+tableNumber+"' GROUP BY bp.bestellingNummer;");
 			
 			// close resultset nog maken!!!!@@@@!!!$%&!@#%@!*~@*
 
