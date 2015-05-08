@@ -207,15 +207,24 @@ public class BarGUI extends JPanel {
 	// Methods
 
 	/*
-	 * Using new method to set table status This method check for payment and
-	 * order tables. Other status checks can be added here
+	 * Using new method to set table status.
+	 * Since a table can only have the status 'Bestelling', 'Afrekenen' or 'Leeg',
+	 * We van anticipate this and use three methods to set the tableButton colors accordingly
 	 */
 	public void setTableStatus() {
 		
 		ArrayList<Table> tableStatusOrder = new ArrayList<Table>();
 		ArrayList<Table> tableStatusPayment = new ArrayList<Table>();
+		ArrayList<Table> tableStatusEmpty = new ArrayList<Table>();
+		tableStatusEmpty = barmanager.getEmptyTables();
 		tableStatusOrder = barmanager.getActiveTables();
 		tableStatusPayment = barmanager.getPaymentTables();
+		
+		//Set table status empty
+		for(Table te : tableStatusEmpty) {
+			int tb = te.getTableNumber();
+			tableButton[tb].setBackground(Color.decode("#DFDFDF"));
+		}
 		
 		//Set table status Order
 		for (Table to : tableStatusOrder) {
@@ -224,25 +233,17 @@ public class BarGUI extends JPanel {
 			repaint();
 		}
 		
-//		//Set table status Payment
+		//Set table status Payment
 		for (Table tp : tableStatusPayment) {
 			int tb = tp.getTableNumber();
 			tableButton[tb].setBackground(Color.RED);
 			repaint();
 		}
-		
-//		for(int i = 1; i <= AMOUNT_OF_TABLEBUTTONS; i++) {
-//			if(i != tableStatusOrder.get(i-1).getTableNumber() && i != tableStatusPayment.get(i-1).getTableNumber()) {
-//				tableButton[i].setBackground(Color.decode("#DFDFDF"));
-//				repaint();
-//			}
-//		}
-		
-		
-//		
+			
 		//Clear all lists so there wont be any duplicate tables when the method is calles again
 		tableStatusOrder.clear();
 		tableStatusPayment.clear();
+		tableStatusEmpty.clear();
 	}
 
 	
