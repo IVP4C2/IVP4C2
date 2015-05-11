@@ -29,14 +29,12 @@ import com.mysql.jdbc.ResultSetMetaData;
 
 import nl.edu.avans.ivp4c2.domain.Table;
 import nl.edu.avans.ivp4c2.manager.BarManager;
-import nl.edu.avans.ivp4c2.manager.KitchenManager;
 
-public class BarGUI extends JPanel {
+public class KitchenGUI extends JPanel {
 
 	// Attributes
 	private JLabel logo;
 	private JLabel startText;
-	private Font font;
 
 	// Buttons
 	private JButton barOrderButton;
@@ -57,6 +55,7 @@ public class BarGUI extends JPanel {
 	private JPanel panelNorthLeft;
 	private JPanel panelNorthRight;
 	private JPanel panelWest;
+	private JPanel panelEast;
 	private JPanel panelCenter;
 
 	/*
@@ -70,11 +69,9 @@ public class BarGUI extends JPanel {
 
 	// static Vector<String> columnNames;
 	private BarManager barmanager;
-	private KitchenManager kitchenmanager;
 
-	public BarGUI(BarManager barmanager, KitchenManager kitchenmanager) {
+	public KitchenGUI(BarManager barmanager) {
 		this.barmanager = barmanager;
-		this.kitchenmanager = kitchenmanager;
 
 		setLayout(new BorderLayout());
 
@@ -85,7 +82,7 @@ public class BarGUI extends JPanel {
 		panelNorthLeft = new JPanel();
 		panelNorthRight = new JPanel();
 		panelWest = new JPanel();
-		// panelEast = new JPanel();
+		panelEast = new JPanel();
 		panelCenter = new JPanel();
 		panelCenter.setBackground(Color.WHITE);
 
@@ -95,8 +92,8 @@ public class BarGUI extends JPanel {
 		panelNorthLeft.setLayout(new GridLayout(1, 2));
 		panelNorthLeft.setSize(600, 200);
 		panelNorthRight.setLayout(new GridLayout(2, 5));
-		panelWest.setLayout(new GridLayout(6, 1));
-		// panelEast.setLayout(new BorderLayout());
+		panelWest.setLayout(new GridLayout(5, 1));
+		panelEast.setLayout(new BorderLayout());
 		panelCenter.setLayout(new GridLayout(1, 2)); // Has 1 row and two
 														// columns. leftPanel
 														// and rightPanel will
@@ -146,12 +143,11 @@ public class BarGUI extends JPanel {
 
 		// Setup West panel
 		barOrderButton = new JButton("Barbestellingen");
-		barOrderButton.addActionListener(new LeftMenuHandler());
-		barOrderButton.setBackground(Color.decode("#DFDFDF"));
+		barOrderButton.setBackground(Color.DARK_GRAY);
+		barOrderButton.setForeground(Color.WHITE);
 		barOrderButton.setFont(font);
 		barOrderButton.setBorder(BorderFactory.createEtchedBorder());
 		kitchenOrderButton = new JButton("Keukenbestellingen");
-		kitchenOrderButton.addActionListener(new LeftMenuHandler());
 		kitchenOrderButton.setBackground(Color.decode("#DFDFDF"));
 		kitchenOrderButton.setFont(font);
 		kitchenOrderButton.setBorder(BorderFactory.createEtchedBorder());
@@ -159,10 +155,6 @@ public class BarGUI extends JPanel {
 		employeesButton.setBackground(Color.decode("#DFDFDF"));
 		employeesButton.setFont(font);
 		employeesButton.setBorder(BorderFactory.createEtchedBorder());
-		completeOrderButton = new JButton("Afronden");
-		completeOrderButton.setBackground(Color.decode("#DFDFDF"));
-		completeOrderButton.setFont(font);
-		completeOrderButton.setBorder(BorderFactory.createEtchedBorder());
 		loginButton = new JButton("Inloggen");
 		loginButton.setBackground(Color.decode("#DFDFDF"));
 		loginButton.setFont(font);
@@ -175,9 +167,17 @@ public class BarGUI extends JPanel {
 		panelWest.add(barOrderButton);
 		panelWest.add(kitchenOrderButton);
 		panelWest.add(employeesButton);
-		panelWest.add(completeOrderButton);
 		panelWest.add(loginButton);
 		panelWest.add(logoutButton);
+
+		// Setup east panel
+		completeOrderButton = new JButton("Afronden");
+		completeOrderButton.setBackground(Color.decode("#DFDFDF"));
+		completeOrderButton.setMinimumSize(new Dimension(100, 100));
+		completeOrderButton.setPreferredSize(new Dimension(100, 100));
+		completeOrderButton.setFont(font);
+		completeOrderButton.setBorder(BorderFactory.createEtchedBorder());
+		panelEast.add(completeOrderButton);
 
 		// Add all panels
 		panelNorth.add(panelNorthLeft, BorderLayout.WEST); // Added
@@ -186,6 +186,7 @@ public class BarGUI extends JPanel {
 
 		add(panelCenter, BorderLayout.CENTER);
 		add(panelWest, BorderLayout.WEST);
+		add(panelEast, BorderLayout.SOUTH);
 
 		/*
 		 * Calls setTableStatus() every 10 seconds. Other methods that should be
@@ -197,7 +198,7 @@ public class BarGUI extends JPanel {
 
 			public void run() {
 				setTableStatus();
-
+				
 			}
 
 		}, 0, 3, TimeUnit.SECONDS);
@@ -206,53 +207,53 @@ public class BarGUI extends JPanel {
 	// Methods
 
 	/*
-	 * Using new method to set table status. Since a table can only have the
-	 * status 'Bestelling', 'Afrekenen' or 'Leeg', We van anticipate this and
-	 * use three methods to set the tableButton colors accordingly
+	 * Using new method to set table status.
+	 * Since a table can only have the status 'Bestelling', 'Afrekenen' or 'Leeg',
+	 * We van anticipate this and use three methods to set the tableButton colors accordingly
 	 */
 	public void setTableStatus() {
-
+		
 		ArrayList<Table> tableStatusOrder = new ArrayList<Table>();
 		ArrayList<Table> tableStatusPayment = new ArrayList<Table>();
 		ArrayList<Table> tableStatusEmpty = new ArrayList<Table>();
 		tableStatusEmpty = barmanager.getEmptyTables();
 		tableStatusOrder = barmanager.getActiveTables();
 		tableStatusPayment = barmanager.getPaymentTables();
-
-		// Set table status empty
-		for (Table te : tableStatusEmpty) {
+		
+		//Set table status empty
+		for(Table te : tableStatusEmpty) {
 			int tb = te.getTableNumber();
 			tableButton[tb].setBackground(Color.decode("#DFDFDF"));
 		}
-
-		// Set table status Order
+		
+		//Set table status Order
 		for (Table to : tableStatusOrder) {
 			int tb = to.getTableNumber();
-			tableButton[tb].setBackground(Color.GREEN);
+			tableButton[tb].setBackground(Color.ORANGE);
 			repaint();
 		}
-
-		// Set table status Payment
+		
+		//Set table status Payment
 		for (Table tp : tableStatusPayment) {
 			int tb = tp.getTableNumber();
 			tableButton[tb].setBackground(Color.RED);
 			repaint();
 		}
-
-		// Clear all lists so there wont be any duplicate tables when the method
-		// is calles again
+			
+		//Clear all lists so there wont be any duplicate tables when the method is calles again
 		tableStatusOrder.clear();
 		tableStatusPayment.clear();
 		tableStatusEmpty.clear();
 	}
 
+	
 	// Method to create JTable
 	public static DefaultTableModel buildTableModel(ResultSet rs)
 			throws SQLException {
 
 		ResultSetMetaData metaData = (ResultSetMetaData) rs.getMetaData();
 
-		// Gets column names from ResultSet
+		//Gets column names from ResultSet
 		Vector<String> columnNames = new Vector<String>();
 		int columnCount = metaData.getColumnCount();
 		for (int column = 1; column <= columnCount; column++) {
@@ -271,54 +272,15 @@ public class BarGUI extends JPanel {
 		}
 
 		return new DefaultTableModel(data, columnNames);
+
 	}
 
 	// Inner classes
-	class LeftMenuHandler implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == barOrderButton) {
-				barOrderButton.setBackground(Color.DARK_GRAY);
-				barOrderButton.setForeground(Color.WHITE);
-				leftPanel.removeAll();
-				rightPanel.removeAll();
-			} else {
-				barOrderButton.setForeground(Color.black);
-				barOrderButton.setBackground(Color.decode("#DFDFDF"));
-			}
-			if (e.getSource() == kitchenOrderButton) {
-				kitchenOrderButton.setBackground(Color.DARK_GRAY);
-				kitchenOrderButton.setForeground(Color.WHITE);
-				leftPanel.removeAll();
-				rightPanel.removeAll();
-				try {
-					JTable kitchenTable = new JTable(
-							buildTableModel(kitchenmanager.getReadyOrders()));
-					leftPanel.add(new JScrollPane(kitchenTable));
-					panelCenter.revalidate();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			} else {
-				kitchenOrderButton.setForeground(Color.black);
-				kitchenOrderButton.setBackground(Color.decode("#DFDFDF"));
-			}
-		}
-	}
-
-	class KitchenOrderHandler implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			kitchenOrderButton.setBackground(Color.DARK_GRAY);
-			kitchenOrderButton.setForeground(Color.WHITE);
-			repaint();
-		}
-	}
-
 	class BHandler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			rightPanel.removeAll();
 			leftPanel.removeAll();
-
+			
 			for (int tb = 1; tb <= 10; tb++) {
 				if (e.getSource() == tableButton[tb]) {
 					final int tableNumber = tb; // create new integer. Easier to
@@ -392,15 +354,17 @@ public class BarGUI extends JPanel {
 						f.printStackTrace();
 					}
 
-				} else {
+					// Panel center - right
+
+				}
+				else {
 					TitledBorder topBorderInactive = BorderFactory
 							.createTitledBorder("");
 					topBorderInactive.setBorder(BorderFactory
 							.createLineBorder(Color.decode("#DFDFDF")));
 					topBorderInactive.setTitlePosition(TitledBorder.TOP);
 					tableButton[tb].setBorder(topBorderInactive);
-					tableButton[tb].setBorder(BorderFactory
-							.createEtchedBorder());
+					tableButton[tb].setBorder(BorderFactory.createEtchedBorder());
 				}
 
 			}

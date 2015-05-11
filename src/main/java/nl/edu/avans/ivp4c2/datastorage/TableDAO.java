@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author ppthgast
+ * @author VP4C2
  */
 public class TableDAO {
     /*These string will be used to complete the SQL select statement
