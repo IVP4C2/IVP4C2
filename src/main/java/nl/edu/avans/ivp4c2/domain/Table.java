@@ -2,6 +2,13 @@ package nl.edu.avans.ivp4c2.domain;
 
 import java.util.ArrayList;
 
+/**
+ * A Table has Orders and Orders have Products
+ * 
+ * @author IVP4C2
+ */
+
+
 public class Table {
 	private int tableNumber;
 	private String tableStatus;
@@ -15,6 +22,7 @@ public class Table {
 		ArrayList<Order> orders = new ArrayList<Order>();
 	}
 	
+	//Getters
 	public int getTableNumber() {
 		return tableNumber;
 	}
@@ -27,6 +35,17 @@ public class Table {
 		return amountPersons;
 	}
 	
+	public ArrayList<Order> getOrders() {
+		return orders;
+	}
+	
+	//Setters
+	public void addOrder(Order order) {
+		orders.add(order);
+	}
+	
+	
+	//Print methods
 	public String toString() {
 		return String.format("%-20s %-20s %-20s", tableNumber, tableStatus, amountPersons);
 	}

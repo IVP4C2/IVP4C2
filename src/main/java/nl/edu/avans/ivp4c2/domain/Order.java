@@ -7,23 +7,22 @@ import java.util.ArrayList;
 public class Order {
 	private int orderNumber;
 	private String orderStatus;
-	private Time orderTime;
+	private String orderTime;
 	private ArrayList<Product> products;
-	private Table table;
 	
-	public Order(int orderNumber, String orderStatus, Time orderTime, Table table) {
+	public Order(int orderNumber, String orderStatus, String orderTime) {
 		this.orderNumber = orderNumber;
 		this.orderStatus = orderStatus;
 		this.orderTime = orderTime;
-		ArrayList<Product> products = new ArrayList<Product>();
-		this.table = table;
+		products = new ArrayList<Product>();
+		
 	}
 	
 	public int getOrderNumber() {
 		return orderNumber;
 	}
 
-	public Time getOrderTime() {
+	public String getOrderTime() {
 		return orderTime;
 	}
 	
@@ -31,11 +30,12 @@ public class Order {
 		return orderStatus;
 	}
 	
+	public void addProduct(Product product) {
+		products.add(product);
+	}
+	
 	public void setOrderStatus(String newStatus) {
 		this.orderStatus = newStatus;
 	}
-	
-	public Table getTable() {
-		return table;
-	}
+
 }

@@ -4,18 +4,18 @@ public class Product {
 	private int productNumber;
 	private String productName;
 	private String brand;
-	private Order order;
+	private int amount;
 	
-	public Product(int productNumber, String productName, Order order) {
+	public Product(int productNumber, String productName, int amount) {
 		this.productNumber = productNumber;
 		this.productName = productName;
-		this.order = order;
+		this.amount = amount;
 	}
 	
-	public Product(int productNumber, String productName, Order order, String brand) {
+	public Product(int productNumber, String productName, int amount, String brand) {
 		this.productNumber = productNumber;
 		this.productName = productName;
-		this.order = order;
+		this.amount = amount;
 		this.brand = brand;
 	}
 
@@ -31,7 +31,7 @@ public class Product {
 		return brand;
 	}
 	
-	public Order getOrder() {
-		return order;
+	public int getAmount() {
+		return amount;
 	}
 }

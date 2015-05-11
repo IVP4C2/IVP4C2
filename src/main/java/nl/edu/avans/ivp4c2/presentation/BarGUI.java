@@ -70,11 +70,9 @@ public class BarGUI extends JPanel {
 
 	// static Vector<String> columnNames;
 	private BarManager barmanager;
-	private KitchenManager kitchenmanager;
 
-	public BarGUI(BarManager barmanager, KitchenManager kitchenmanager) {
+	public BarGUI(BarManager barmanager) {
 		this.barmanager = barmanager;
-		this.kitchenmanager = kitchenmanager;
 
 		setLayout(new BorderLayout());
 
@@ -239,11 +237,6 @@ public class BarGUI extends JPanel {
 			repaint();
 		}
 
-		// Clear all lists so there wont be any duplicate tables when the method
-		// is calles again
-		tableStatusOrder.clear();
-		tableStatusPayment.clear();
-		tableStatusEmpty.clear();
 	}
 
 	// Method to create JTable
@@ -292,7 +285,7 @@ public class BarGUI extends JPanel {
 				rightPanel.removeAll();
 				try {
 					JTable kitchenTable = new JTable(
-							buildTableModel(kitchenmanager.getReadyOrders()));
+							buildTableModel(barmanager.getTableOrder()));
 					leftPanel.add(new JScrollPane(kitchenTable));
 					panelCenter.revalidate();
 				} catch (SQLException e1) {
