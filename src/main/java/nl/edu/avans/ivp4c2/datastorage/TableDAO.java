@@ -12,8 +12,8 @@ import java.util.ArrayList;
  * This DAO retrieves data from the database and stores it in Table objects
  * These table objects contain an ArrayList with Orders. These Orders contain an ArrayList with Products.
  * The Table objects can be accessed by using the BarManager.
- * To create these Order objects, this class used the OrderDAO.
- * To create the product for an Order, the OrderDAO uses ProductDAo
+ * To create these Order objects, this class uses the OrderDAO.
+ * To create the product for an Order, the OrderDAO uses ProductDAO
  * This class can be seen as a master class from where other DAO's get called.
  * 
  *  @author IVP4C2

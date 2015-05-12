@@ -45,7 +45,7 @@ public class OrderDAO {
                        Order newOrder = new Order(
                     		   resultset.getInt("bestellingNummer"),
                     		   resultset.getString("bestellingStatus"),
-                    		   resultset.getString("bestellingTijd")
+                    		   resultset.getTime("bestellingTijd")
                     		   );
                        
                        //Create new ProductDAO to retrieve and create Product Object for the order

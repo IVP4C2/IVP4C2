@@ -7,10 +7,10 @@ import java.util.ArrayList;
 public class Order {
 	private int orderNumber;
 	private String orderStatus;
-	private String orderTime;
+	private Time orderTime;
 	private ArrayList<Product> products;
 	
-	public Order(int orderNumber, String orderStatus, String orderTime) {
+	public Order(int orderNumber, String orderStatus, Time orderTime) {
 		this.orderNumber = orderNumber;
 		this.orderStatus = orderStatus;
 		this.orderTime = orderTime;
@@ -22,7 +22,7 @@ public class Order {
 		return orderNumber;
 	}
 
-	public String getOrderTime() {
+	public Time getOrderTime() {
 		return orderTime;
 	}
 	

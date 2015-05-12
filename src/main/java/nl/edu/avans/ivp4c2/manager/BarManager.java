@@ -29,7 +29,7 @@ public class BarManager {
 		getEmptyTablesDAO();
 
 		/*
-		 * Calls the three DAO table getters every 3 seconds. These methods are
+		 * Calls the three DAO table getters three seconds. These methods are
 		 * used to keep the ArrayLists up to date. These ArrayList can be used
 		 * by calling the three ArrayList getters. Other methods that should be
 		 * called every X seconds should be added here too
@@ -44,7 +44,7 @@ public class BarManager {
 				getEmptyTablesDAO();
 			}
 
-		}, 0, 3, TimeUnit.SECONDS);
+		}, 0, 5, TimeUnit.SECONDS);
 	}
 
 	/*
